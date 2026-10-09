@@ -112,10 +112,14 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8000
 ```
 
-### 5. Open the App
+### 5. Access the Live Deployment
 
-- **Frontend UI:** http://localhost:8000/
-- **API Docs (Swagger):** http://localhost:8000/docs
+The application is fully containerized and hosted live on Render!
+
+- **🌍 Live Frontend UI:** [https://legalease-pk5s.onrender.com](https://legalease-pk5s.onrender.com)
+- **📚 Live API Docs (Swagger):** [https://legalease-pk5s.onrender.com/docs](https://legalease-pk5s.onrender.com/docs)
+
+*(If you are running the server locally, you can access it at `http://localhost:8000/`)*
 
 ## 📡 API Endpoints
 
