@@ -1,7 +1,7 @@
 import io
 import re
 from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image, PageBreak
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import inch
 from docx import Document
@@ -78,10 +78,13 @@ def generate_pdf(markdown_content: str, chart_bytes: bytes = None) -> io.BytesIO
             story.append(Paragraph(line, normal_style))
             
     if chart_bytes:
+        story.append(PageBreak())
+        story.append(Paragraph("<b>Financial Analytics Appendix</b>", heading2_style))
         story.append(Spacer(1, 0.2 * inch))
         chart_stream = io.BytesIO(chart_bytes)
         # Assuming typical size of 6x3 or similar, adjusting for page
         img = Image(chart_stream, width=5*inch, height=2.5*inch, kind='proportional')
+        img.hAlign = 'CENTER'
         story.append(img)
             
     doc.build(story, onFirstPage=on_page_setup, onLaterPages=on_page_setup)
@@ -132,8 +135,12 @@ def generate_docx(markdown_content: str, chart_bytes: bytes = None) -> io.BytesI
             doc.add_paragraph(clean_line)
             
     if chart_bytes:
+        doc.add_page_break()
+        doc.add_heading('Financial Analytics Appendix', level=2)
         chart_stream = io.BytesIO(chart_bytes)
         doc.add_picture(chart_stream)
+        last_paragraph = doc.paragraphs[-1]
+        last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
     buffer = io.BytesIO()
     doc.save(buffer)
