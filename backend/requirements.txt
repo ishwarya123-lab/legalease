@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+pydantic
+pydantic-settings
+python-dotenv
+google-genai
+reportlab
+python-docx
+jinja2
+
+numpy
+matplotlib
