@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
-<body class="bg-gray-50 h-screen flex flex-col font-sans">
+<body class="bg-gray-50 min-h-screen md:h-screen flex flex-col font-sans">
     <header class="bg-slate-900 text-white p-4 shadow-md shrink-0">
         <div class="flex justify-between items-center">
             <div>
@@ -19,9 +19,9 @@
         </div>
     </header>
 
-    <main class="flex-1 flex flex-col md:flex-row overflow-hidden">
+    <main class="flex-1 flex flex-col md:flex-row md:overflow-hidden">
         <!-- Left Panel: Form -->
-        <div class="w-full md:w-1/3 bg-white p-6 shadow-lg overflow-y-auto border-r border-gray-200">
+        <div class="w-full md:w-1/3 bg-white p-6 shadow-lg md:overflow-y-auto border-r border-gray-200">
             <h2 class="text-xl font-semibold mb-4">📋 Document Settings</h2>
             
             <div class="mb-6">
@@ -57,7 +57,7 @@
         </div>
 
         <!-- Right Panel: Output -->
-        <div class="w-full md:w-2/3 bg-gray-50 p-4 md:p-6 overflow-y-auto flex flex-col">
+        <div class="w-full md:w-2/3 bg-gray-50 p-4 md:p-6 md:overflow-y-auto flex flex-col min-h-[500px] md:min-h-0">
             <div class="flex flex-col xl:flex-row justify-between items-start xl:items-center mb-4 gap-4">
                 <div class="flex flex-wrap space-x-1 border-b border-gray-300 pb-2 w-full xl:w-auto">
                     <button id="tabPreview" class="px-3 md:px-4 py-2 text-blue-600 border-b-2 border-blue-600 font-medium text-xs md:text-sm rounded-t">Rendered Preview</button>
@@ -72,7 +72,7 @@
                 </div>
             </div>
 
-            <div class="flex-1 bg-white border border-gray-200 rounded-lg shadow-sm p-8 overflow-y-auto">
+            <div class="flex-1 bg-white border border-gray-200 rounded-lg shadow-sm p-4 md:p-8 md:overflow-y-auto">
                 <div id="contentPreview" class="prose max-w-none">
                     <div class="text-center mt-16">
                         <p class="text-6xl mb-4">⚖️</p>
@@ -81,7 +81,7 @@
                     </div>
                 </div>
                 <div id="contentTerms" class="hidden prose max-w-none"></div>
-                <textarea id="contentText" class="hidden w-full h-full p-4 border border-gray-200 rounded-md focus:ring-blue-500 focus:border-blue-500 font-mono text-sm resize-none"></textarea>
+                <textarea id="contentText" class="hidden w-full h-full min-h-[400px] md:min-h-0 p-4 border border-gray-200 rounded-md focus:ring-blue-500 focus:border-blue-500 font-mono text-sm resize-none"></textarea>
             </div>
         </div>
     </main>
