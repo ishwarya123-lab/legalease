@@ -159,6 +159,35 @@ def generate_nda_analytics(data: dict) -> tuple[dict, io.BytesIO]:
     return metrics, buf
 
 
+def generate_generic_analytics(data: dict) -> tuple[dict, io.BytesIO]:
+    """Fallback generic analytics for custom document types."""
+    months = np.arange(1, 13)
+    # Generic linear risk/cost progression
+    values = np.linspace(10, 100, 12)
+    
+    metrics = {
+        "document_status": "Custom Contract Generated",
+        "estimated_duration_months": 12,
+        "standard_risk_assessment": "Baseline",
+    }
+    
+    fig, ax = plt.subplots(figsize=(8, 4))
+    ax.plot(months, values, color='#6b7280', linewidth=2, label='Contract Timeline Progression')
+    ax.fill_between(months, values, alpha=0.15, color='#6b7280')
+    ax.set_xlabel('Month', fontsize=11)
+    ax.set_ylabel('Progress (%)', fontsize=11)
+    ax.set_title('Contract Timeline Analytics', fontsize=13, fontweight='bold')
+    ax.legend(fontsize=9)
+    ax.grid(True, alpha=0.3)
+    plt.tight_layout()
+
+    buf = io.BytesIO()
+    fig.savefig(buf, format='png', dpi=150)
+    plt.close(fig)
+    buf.seek(0)
+    return metrics, buf
+
+
 def get_analytics(document_type: str, data: dict) -> tuple[dict, io.BytesIO]:
     """Route to the correct analytics generator based on document type."""
     if document_type == "Lease":
@@ -168,4 +197,4 @@ def get_analytics(document_type: str, data: dict) -> tuple[dict, io.BytesIO]:
     elif document_type == "NDA":
         return generate_nda_analytics(data)
     else:
-        raise ValueError(f"Unknown document type: {document_type}")
+        return generate_generic_analytics(data)
