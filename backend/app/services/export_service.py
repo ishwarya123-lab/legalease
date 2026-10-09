@@ -9,16 +9,16 @@ from docx import Document
 def on_page_setup(canvas, doc):
     canvas.saveState()
     
-    # Watermark Header
-    canvas.setFont("Helvetica-Bold", 14)
-    canvas.setFillColorRGB(0.8, 0.8, 0.8)
-    canvas.drawCentredString(letter[0] / 2.0, letter[1] - 0.5 * inch, "CONFIDENTIAL")
+    # Header: LegalEase Logo
+    canvas.setFont("Helvetica-Bold", 24)
+    canvas.setFillColorRGB(0.1, 0.1, 0.1)
+    canvas.drawCentredString(letter[0] / 2.0, letter[1] - 0.75 * inch, "LegalEase")
     
-    # Page Numbers
+    # Footer
     canvas.setFont("Helvetica", 9)
-    canvas.setFillColorRGB(0, 0, 0)
-    page_num = canvas.getPageNumber()
-    canvas.drawString(inch, 0.5 * inch, f"Page {page_num}")
+    canvas.setFillColorRGB(0.4, 0.4, 0.4)
+    footer_text = "LegalEase Inc. | contact@legalease.com | All Rights Reserved"
+    canvas.drawCentredString(letter[0] / 2.0, 0.5 * inch, footer_text)
     
     canvas.restoreState()
 
@@ -89,7 +89,24 @@ def generate_pdf(markdown_content: str, chart_bytes: bytes = None) -> io.BytesIO
     return buffer
 
 def generate_docx(markdown_content: str, chart_bytes: bytes = None) -> io.BytesIO:
+    from docx.enum.text import WD_ALIGN_PARAGRAPH
     doc = Document()
+    
+    # Add Header (Logo)
+    section = doc.sections[0]
+    header = section.header
+    header_para = header.paragraphs[0]
+    header_para.text = "LegalEase"
+    header_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    for run in header_para.runs:
+        run.bold = True
+        run.font.size = 288000 # 24 pt
+        
+    # Add Footer
+    footer = section.footer
+    footer_para = footer.paragraphs[0]
+    footer_para.text = "LegalEase Inc. | contact@legalease.com | All Rights Reserved"
+    footer_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
     
     lines = markdown_content.split('\n')
     for line in lines:
