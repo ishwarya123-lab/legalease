@@ -10,5 +10,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy both backend and frontend folders
 COPY . .
 
-# Run uvicorn pointing to the backend module
+# Set python path so backend modules resolve correctly
+ENV PYTHONPATH=/app/backend
+
+# Run uvicorn pointing to the app module
 CMD ["uvicorn", "backend.app.main:app", "--host", "0.0.0.0", "--port", "8000"]
