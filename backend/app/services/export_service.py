@@ -6,13 +6,20 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import inch
 from docx import Document
 
+import os
+
 def on_page_setup(canvas, doc):
     canvas.saveState()
     
     # Header: LegalEase Logo
+    logo_path = os.path.join(os.path.dirname(__file__), "logo.png")
+    if os.path.exists(logo_path):
+        # Draw image centered at the top
+        canvas.drawImage(logo_path, letter[0]/2.0 - 0.4*inch, letter[1] - 0.8*inch, width=0.8*inch, height=0.8*inch, mask='auto')
+        
     canvas.setFont("Helvetica-Bold", 24)
     canvas.setFillColorRGB(0.1, 0.1, 0.1)
-    canvas.drawCentredString(letter[0] / 2.0, letter[1] - 0.75 * inch, "LegalEase")
+    canvas.drawCentredString(letter[0] / 2.0, letter[1] - 1.1 * inch, "LegalEase")
     
     # Footer
     canvas.setFont("Helvetica", 9)
@@ -93,17 +100,25 @@ def generate_pdf(markdown_content: str, chart_bytes: bytes = None) -> io.BytesIO
 
 def generate_docx(markdown_content: str, chart_bytes: bytes = None) -> io.BytesIO:
     from docx.enum.text import WD_ALIGN_PARAGRAPH
+    from docx.shared import Inches
+    import os
     doc = Document()
     
     # Add Header (Logo)
     section = doc.sections[0]
     header = section.header
     header_para = header.paragraphs[0]
-    header_para.text = "LegalEase"
     header_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    for run in header_para.runs:
-        run.bold = True
-        run.font.size = 288000 # 24 pt
+    
+    logo_path = os.path.join(os.path.dirname(__file__), "logo.png")
+    if os.path.exists(logo_path):
+        run1 = header_para.add_run()
+        run1.add_picture(logo_path, width=Inches(0.6))
+        header_para.add_run("\n")
+        
+    run2 = header_para.add_run("LegalEase")
+    run2.bold = True
+    run2.font.size = 288000 # 24 pt
         
     # Add Footer
     footer = section.footer
